@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: postgres://test:secret@localhost:5432/test?sslmode=disable
+    dir: db/migrations
+    table: migrations

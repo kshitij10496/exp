@@ -1,0 +1,12 @@
+version: "3"
+services:
+  pg:
+    container_name: exp-jsonb
+    image: postgres:14.7
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "test"
+      POSTGRES_PASSWORD: "secret"
+      POSTGRES_DB: "test"
