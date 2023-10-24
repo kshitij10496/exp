@@ -14,7 +14,7 @@ func main() {
 }
 
 func run() error {
-	args := os.Args
+	args := os.Args[1:]
 	if len(args) != 2 {
 		return errors.New("invalid syntax: needs exactly 2 arguments")
 	}
