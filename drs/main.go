@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"os"
 )
 
 func main() {
@@ -12,5 +14,16 @@ func main() {
 }
 
 func run() error {
-	return fmt.Errorf("not implemented")
+	args := os.Args
+	if len(args) != 2 {
+		return errors.New("invalid syntax: needs exactly 2 arguments")
+	}
+
+	dnsServer, address := args[0], args[1]
+	ipAddress, err := resolve(address, dnsServer)
+	if err != nil {
+		return fmt.Errorf("resolving address %s: %w", address, err)
+	}
+	fmt.Println(ipAddress)
+	return nil
 }
