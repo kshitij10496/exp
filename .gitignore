@@ -2,3 +2,5 @@ drs/bin
 
 snakes-and-ladders/venv
 snakes-and-ladders/.ipynb*
+
+rv/node_modules/
