@@ -17,3 +17,9 @@ Using Go 1.21 to learn UDP network programming.
 **Objective**: Parse the request packet that has been sent to your server.
 
 **Approach**: Using the [github.com/miekg/dns](https://github.com/miekg/dns) package, I did not implement the actual byte parsing logic. My goal is to get to the meat of the problem this tool solves. I will probably try to revisit this once I am through with all the steps.
+
+# Step 3
+
+**Objective**: Forward the request to a DNS server to actually resolve the request.
+
+**Approach**: Dial up a UDP connection with Google's public DNS server. We can add TLS or HTTPS as a future iteration.

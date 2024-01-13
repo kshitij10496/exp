@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"time"
 
 	"github.com/miekg/dns"
 )
@@ -52,9 +53,9 @@ func run(ctx context.Context) error {
 		}
 
 		// Display received data
-
 		fmt.Printf("received data from %v: %s\n", clientAddr, string(buffer[:n]))
 
+		// Unpack the received message.
 		m := new(dns.Msg)
 		if err := m.Unpack(buffer); err != nil {
 			fmt.Printf("failed to parse msg: %w", err)
@@ -63,6 +64,21 @@ func run(ctx context.Context) error {
 		fmt.Printf("header- %s\n", m.MsgHdr.String())
 		fmt.Printf("questions- %v\n", m.Question)
 		fmt.Printf("answers: %v\n", m.Answer)
+
+		// Dial up a new connection to Google DNS.
+		c, err := dns.DialTimeout("udp", "8.8.8.8:53", time.Minute)
+		if err != nil {
+			fmt.Printf("failed to dial Google's DNS server: %w", err)
+			continue
+		}
+
+		// Forward the message to Google DNS.
+		if err := c.WriteMsg(m); err != nil {
+			fmt.Printf("failed to write DNS message to Google DNS server: %w", err)
+			continue
+		}
+
+		fmt.Println("forwarded question")
 
 		// Send a response back to the client
 		response := []byte("Hello from UDP server!")
