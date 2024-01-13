@@ -23,3 +23,9 @@ Using Go 1.21 to learn UDP network programming.
 **Objective**: Forward the request to a DNS server to actually resolve the request.
 
 **Approach**: Dial up a UDP connection with Google's public DNS server. We can add TLS or HTTPS as a future iteration.
+
+# Step 4
+
+**Objective**: Receive an answer from the DNS server, unpack it and forward the answer to the original client that asked for it.
+
+**Approach**: 

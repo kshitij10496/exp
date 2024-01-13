@@ -80,9 +80,19 @@ func run(ctx context.Context) error {
 
 		fmt.Println("forwarded question")
 
-		// Send a response back to the client
-		response := []byte("Hello from UDP server!")
-		_, err = conn.WriteToUDP(response, clientAddr)
+		resp, err := c.ReadMsg()
+		if err != nil {
+			fmt.Printf("failed to read DNS response from Google DNS server: %w", err)
+			continue
+		}
+
+		r, err := resp.Pack()
+		if err != nil {
+			fmt.Printf("failed to pack DNS response: %v\n", err)
+			continue
+		}
+
+		_, err = conn.WriteToUDP(r, clientAddr)
 		if err != nil {
 			fmt.Println("Error sending response:", err)
 		}
