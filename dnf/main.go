@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net"
 	"os"
+
+	"github.com/miekg/dns"
 )
 
 var (
@@ -50,7 +52,17 @@ func run(ctx context.Context) error {
 		}
 
 		// Display received data
+
 		fmt.Printf("received data from %v: %s\n", clientAddr, string(buffer[:n]))
+
+		m := new(dns.Msg)
+		if err := m.Unpack(buffer); err != nil {
+			fmt.Printf("failed to parse msg: %w", err)
+			continue
+		}
+		fmt.Printf("header- %s\n", m.MsgHdr.String())
+		fmt.Printf("questions- %v\n", m.Question)
+		fmt.Printf("answers: %v\n", m.Answer)
 
 		// Send a response back to the client
 		response := []byte("Hello from UDP server!")
