@@ -1,0 +1,32 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - url: http://host.docker.internal:8081
+    name: calculator_service
+    protocol: http
+    routes:
+      - name: calculator_routes
+        paths:
+          - /calculator/*
+        strip_path: true
+  - url: http://host.docker.internal:8082
+    name: weather_service
+    protocol: http
+    routes:
+      - name: weather_routes
+        paths:
+          - /weather
+        strip_path: true
+
+plugins:
+  - name: rate-limiting
+    config:
+      minute: 3
+      policy: local
+    service: calculator_service
+  - name: rate-limiting
+    config:
+      minute: 3
+      policy: local
+    service: weather_service
